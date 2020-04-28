@@ -107,7 +107,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      99 min read
+      102 min read
     
 </span></p>
 
@@ -146,12 +146,17 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Adaptive-Charging-Networks">Adaptive Charging Networks </a></li>
+<li class="toc-entry toc-h2"><a href="#Claimed/Unclaimed-Sessions">Claimed/Unclaimed Sessions </a>
+<ul>
 <li class="toc-entry toc-h3"><a href="#ANALYSIS-1:-BEFORE/AFTER-PRICING-POLICY-CHANGE">ANALYSIS 1: BEFORE/AFTER PRICING POLICY CHANGE </a></li>
 <li class="toc-entry toc-h3"><a href="#Analysis-1---Conclusion">Analysis 1 - Conclusion </a></li>
 <li class="toc-entry toc-h3"><a href="#ANALYSIS-2:-THE-YEAR-OF-2019">ANALYSIS 2: THE YEAR OF 2019 </a></li>
 <li class="toc-entry toc-h3"><a href="#Analysis-2---Conclusion">Analysis 2 - Conclusion </a></li>
 <li class="toc-entry toc-h3"><a href="#ANALYSIS-3:-INDIVIDUAL-DRIVER-CHARGING-BEHAVIOR-IN-THE-YEAR-OF-2019">ANALYSIS 3: INDIVIDUAL DRIVER CHARGING BEHAVIOR IN THE YEAR OF 2019 </a></li>
 <li class="toc-entry toc-h3"><a href="#Analysis-3--Conclusion">Analysis 3- Conclusion </a></li>
+</ul>
+</li>
 <li class="toc-entry toc-h2"><a href="#Missing">Missing </a></li>
 <li class="toc-entry toc-h2"><a href="#References">References </a></li>
 </ul><!--
@@ -173,6 +178,43 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>In this notebook, the data analysis to study driver charging behavior in adaptive charging networks is performed.
+This study has 3 main objectives:</p>
+<ol>
+<li>Analyze the driver charging behavior before and after pricing policy changes for 2 sites</li>
+<li>Analyze the driver charging behavior throughout the year of 2019 for 2 sites</li>
+<li>Analyze independent driver charging behavior throughout the year of 2019 for 2 sites</li>
+</ol>
+<p>The dataset used in this study is the <a href="https://ev.caltech.edu/dataset">ACN-Data</a> dataset, proposed in [1].
+The dataset contains 2 sites that will be further investigated in this study:</p>
+<ul>
+<li>
+<strong>Caltech</strong> : 54 6.6kW level-2 EVSEs in one campus garage. The site is open to the public.</li>
+<li>
+<strong>Jpl</strong> : 50 6.6kW level-2 EVSEs in a workplace environment. The site is used only by employees.</li>
+</ul>
+<p>For reference, the capacity in each site is equal to:</p>
+<ul>
+<li>
+<strong>Caltech</strong> : 150 kW.</li>
+<li>
+<strong>Jpl</strong> : 195 kW.</li>
+</ul>
+<p><em>Obs</em> : we are not considering the fast charger that is contained in these sites.</p>
+<p><em>Obs2</em> : in the website it says that the Caltech site has 80 EVSEs and 300kW capacity.</p>
+<p>To check the fields contained in the dataset, please check <a href="https://ev.caltech.edu/dataset">ACN-Data</a>.</p>
+<h2 id="Adaptive-Charging-Networks">
+<a class="anchor" href="#Adaptive-Charging-Networks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adaptive Charging Networks<a class="anchor-link" href="#Adaptive-Charging-Networks"> </a>
+</h2>
+<p>First of all, it is possibly that this is the first time the concept of Adaptive Charging Networks is introduced for the reader. In a normal charging network, fixed power is provided to the EV at each timestep. At an Adaptive Charging Network, on the other hand, the power at each timestep (also called pilot signal) is controlled at each timestep by an adaptive scheduling algorithm to optimize a desired cost function, e.g., charge the EVs as fast as possible while meeting power capacity constraints.</p>
+<p>In both sites, an adaptive scheduling algorithm is used to deliver each driver's requested energy prior to her stated departure without exceeding the infrastructure capacity.</p>
+<p>The adaptive scheduling algorithm describes each EV as a tuple $(a_i, e_i, d_i, r_i)$ where $a_i$ is the EV's <em>arrival time</em> relative to the start of the optimization horizon, $e_i$ is its <em>energy demand</em>, $d_i$ is the <em>duration</em> of the session, and $r_i$ is the <em>maximum charging rate</em> for EV <em>i</em>.</p>
+<p>The objective encourage EVs to finish charging as quickly as possible, freeing up capacity for future arrivals.</p>
+<p>It is possible that the energy delivered may not reach the user's requested energy due to their battery becoming full or congestion in the system. (<em>In this study we will investigate if congestion of the system situation happens</em>)</p>
+<h2 id="Claimed/Unclaimed-Sessions">
+<a class="anchor" href="#Claimed/Unclaimed-Sessions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Claimed/Unclaimed Sessions<a class="anchor-link" href="#Claimed/Unclaimed-Sessions"> </a>
+</h2>
+<p>To obtain data directly from users, a mobile application is used. The driver is able to input their estimated departure time and requested energy. This is referred as user input data. Sessions with an associated iser input are defined as <strong>claimed</strong> and those without this data as <strong>unclaimed</strong>. <strong>Claimed</strong> sessions are useful for studying individual user behavior and is the <strong>main focus of this study</strong>.</p>
 <p>Next, we import the libraries necessary for our study.</p>
 
 </div>
